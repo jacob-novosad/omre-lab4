@@ -160,24 +160,22 @@ def initOdometry():
 	oldEncoder1 = encoder(1)
 	oldEncoder2 = encoder(2)
 	
-
-def goToGoal(dx,dy,dtheta):
+def goToGoalTimed(dx,dy,dtheta,duration):
 	global current_x
 	global current_y
 	global current_theta
+	dt = 0.1
+	start = time.time()
 	
-	while True:
-
-		print("current x = "+str(current_x))
-		print("current y = "+str(current_y))
-		print("current theta = "+str(current_theta))
-
+	while time.time()-float(start) <= float(duration):
+		
 		xc = current_x
 		yc = current_y
 		thetac = current_theta
 
 
 		inv_rotation_mat= np.array([np.cos(thetac), np.sin(thetac), 0, -np.sin(thetac), np.cos(thetac), 0, 0, 0, 1]).reshape(3,3)
+		
 		d = # calculate the distance from the goal
 
 		phi = #calculate the required angle to go to goal
@@ -186,28 +184,22 @@ def goToGoal(dx,dy,dtheta):
 			
 		vel_local = #calculate the local velocity as input to the inverse kinematics algorithm
 		
-		#v = velocity  l = local		
-		vl_x = vel_local[0]
-		vl_y = vel_local[1]
-		vl_theta = vel_local[2]
-		print(vl_x)
-		print(vl_y)
-		print(vl_theta)
+		time_left = duration - (time.time() - start) #duration - time elapsed = time left
+		vl_x = vel_local[0] / time_left
+		vl_y = vel_local[1] / time_left 
+		vl_theta = vel_local[2] / time_left
 		
-		move(vl_x, vl_y, vl_theta)
-		pose = odemetryCalc(xc,yc,thetac)
+		
+		move(vl_x,vl_y,vl_theta)
+		pose = odemetryCalc(current_x,current_y,current_theta)
 		current_x = pose.item(0)
 		current_y = pose.item(1)
-		current_theta = pose.item(2)
-		
-		delta = np.sqrt(((xd-current_x)**2)+((yd-current_y)**2)) #< 0.1	
-		#data_write = "x: "+str(pose[0][0])+"  y: "+str(pose[1][0])+"  theta: "+str(pose[2][0])
-		#print(data_write)
-			#print(delta)
-			
-		if delta < 0.05:	
-			move(0,0,0)
-			break
+		current_theta = pose.item(2)		
+		time.sleep(dt)
+		data_write = "x: "+str(pose[0][0])+"  y: "+str(pose[1][0])+"  theta: "+str(pose[2][0])
+		print(data_write)
+
+	move(0,0,0)
 
 		
 
