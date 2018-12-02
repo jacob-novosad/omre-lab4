@@ -192,7 +192,7 @@ def goToGoalPID(xd,yd,thetad):
 		#Inverse Kinematic 
 		inv_rotation_mat= np.array([np.cos(thetac), np.sin(thetac), 0, -np.sin(thetac), np.cos(thetac), 0, 0, 0, 1]).reshape(3,3)
 		
-		vel_local = #calculate the local velocity as input to the inverse kinematics algorithm (use np.dot)	
+		vel_local = #calculate the local velocity as input to the inverse kinematics algorithm 	
 		
 
 	
