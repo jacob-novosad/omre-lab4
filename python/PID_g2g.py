@@ -178,7 +178,7 @@ def goToGoalPID(xd,yd,thetad):
 		yc = current_y
 		thetac = current_theta
 		
-		#PID Controller		
+		##PID Controller		
 		setPoint = np.array([xd,yd,thetad])[:,None]
 		currentPoint = np.array([xc,yc,thetac])[:,None]
 		error =  # calculate the error between the final and current position
